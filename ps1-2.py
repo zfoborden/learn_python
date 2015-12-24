@@ -42,24 +42,20 @@ def best_wild_hand(hand):
 
 
 def build_hands(hand):
-    new_hand = []
     hands = []
-    if '?B' or '?R' not in hand:
-        print hand[6]
+    if not any('?B' or '?R' in s for s in hand):
         return
     else:
         for c in hand:
+            new_hand = hand[:]
             if c == '?B' or '?R':
                 index = new_hand.index(c)
                 for i in range(2, 15):
                     color = 'B' if '?B' in hand else 'R'
                     suits = ['S', 'C'] if color == 'B' else ['D', 'H']
-                    new_hand = hand[:]
                     for suit in suits:
                         new_hand[index] = str(get_card(i)) + suit
                         hands.append(new_hand)
-
-    print hands
 
     return hands
 
