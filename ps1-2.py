@@ -26,6 +26,7 @@
 
 
 import itertools
+import copy
 
 
 def best_wild_hand(hand):
@@ -44,16 +45,16 @@ def best_wild_hand(hand):
 def build_hands(hand):
     hands = []
     if not any('?B' or '?R' in s for s in hand):
-        return
+        return hand
     else:
         for c in hand:
-            new_hand = hand[:]
-            if c == '?B' or '?R':
-                index = new_hand.index(c)
+            if c == '?B' or c == '?R':
+                index = hand.index(c)
                 for i in range(2, 15):
-                    color = 'B' if '?B' in hand else 'R'
+                    color = 'B' if '?B' in c else 'R'
                     suits = ['S', 'C'] if color == 'B' else ['D', 'H']
                     for suit in suits:
+                        new_hand = copy.deepcopy(hand)
                         new_hand[index] = str(get_card(i)) + suit
                         hands.append(new_hand)
 
@@ -144,6 +145,7 @@ def two_pair(ranks):
         return (pair, lowpair)
     else:
         return None
+
 
 def test_best_wild_hand():
     assert (sorted(best_wild_hand("6C 7C 8C 9C TC 5C ?B".split()))
