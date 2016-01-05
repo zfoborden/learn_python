@@ -26,56 +26,35 @@
 
 
 import itertools
-import copy
+
+allranks = '23456789TJQKA'
+redcards = [r+s for r in allranks for s in 'DH']
+blackcards = [r+s for r in allranks for s in 'SC']
 
 
 def best_wild_hand(hand):
     "Try all values for jokers in all 5-card selections."
-
-    hands = build_hands(hand)
-
-    maxes = set()
-
-    for h in hands:
-        maxes.add(max(itertools.combinations(h, 5), key=hand_rank))
-
-    return list(max(maxes, key=hand_rank))
+    hands = set(best_hand(h) for h in itertools.product(*map(replacements,
+                                                             hand)))
+    return max(hands, key=hand_rank)
 
 
-def build_hands(hand):
-    hands = []
-    if not any('?B' or '?R' in s for s in hand):
-        return hand
+def replacements(card):
+    if card == '?B':
+        return blackcards
+    elif card == '?R':
+        return redcards
     else:
-        for c in hand:
-            if c == '?B' or c == '?R':
-                index = hand.index(c)
-                for i in range(2, 15):
-                    color = 'B' if '?B' in c else 'R'
-                    suits = ['S', 'C'] if color == 'B' else ['D', 'H']
-                    for suit in suits:
-                        new_hand = copy.deepcopy(hand)
-                        new_hand[index] = str(get_card(i)) + suit
-                        hands.append(new_hand)
-
-    return hands
+        return [card]
 
 
-def get_card(num):
-    if num < 10:
-        return num
-    elif num == 10:
-        return 'T'
-    elif num == 11:
-        return 'J'
-    elif num == 12:
-        return 'Q'
-    elif num == 13:
-        return 'K'
-    elif num == 14:
-        return 'A'
-    else:
-        return -1
+def best_hand(hand):
+    "From a 7-card hand, return the best 5 card hand."
+    return max(itertools.combinations(5, hand), key=hand_rank)
+
+
+def get_rank(rank_and_hand):
+    return rank_and_hand.get('rank')
 
 # ------------------
 # Provided Functions
