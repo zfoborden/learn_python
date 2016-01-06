@@ -50,11 +50,7 @@ def replacements(card):
 
 def best_hand(hand):
     "From a 7-card hand, return the best 5 card hand."
-    return max(itertools.combinations(5, hand), key=hand_rank)
-
-
-def get_rank(rank_and_hand):
-    return rank_and_hand.get('rank')
+    return max(itertools.combinations(hand, 5), key=hand_rank)
 
 # ------------------
 # Provided Functions
