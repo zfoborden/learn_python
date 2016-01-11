@@ -6,6 +6,7 @@
 # is zero. So if the formula contained YOU, f would return
 # False anytime that Y was 0
 
+from __future__ import print_function
 import re
 import itertools
 import string
@@ -13,7 +14,7 @@ import string
 
 def compile_formula(formula, verbose=True):
     """Compile formula into a function. Also return letters found, as a str,
-    in same order as parms of function. The first digit of a multi-digit
+    in same order as params of function. The first digit of a multi-digit
     number can't be 0. So if YOU is a word in the formula, and the function
     is called with Y equal to 0, the function should return False."""
 
@@ -23,10 +24,12 @@ def compile_formula(formula, verbose=True):
     params = ', '.join(letters)
     tokens = map(compile_word, re.split('([A-Z]+)', formula))
     body = ''.join(tokens)
-    check = '(False if locals().iterkeys().next() == \'0\' else True) &'
+    print(body)
+    check = '(None if locals()[\'B\'] == 0 else True) &'
+    #check = 'print(locals()[\'B\'])'
     f = 'lambda %s: %s %s' % (params, check, body)
     if verbose:
-        print f
+        print(f)
     return eval(f), letters
 
 
