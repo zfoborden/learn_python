@@ -12,7 +12,7 @@ import itertools
 import string
 
 
-def compile_formula(formula, verbose=True):
+def compile_formula(formula, verbose=False):
     """Compile formula into a function. Also return letters found, as a str,
     in same order as params of function. The first digit of a multi-digit
     number can't be 0. So if YOU is a word in the formula, and the function
@@ -21,13 +21,14 @@ def compile_formula(formula, verbose=True):
     # modify the code in this function.
 
     letters = ''.join(set(re.findall('[A-Z]', formula)))
+    firstletters = ''.join(set(re.findall(r'\b([A-Z])[A-Z]', formula)))
     params = ', '.join(letters)
     tokens = map(compile_word, re.split('([A-Z]+)', formula))
     body = ''.join(tokens)
-    print(body)
-    check = '(None if locals()[\'B\'] == 0 else True) &'
-    #check = 'print(locals()[\'B\'])'
-    f = 'lambda %s: %s %s' % (params, check, body)
+    if firstletters:
+        checks = ' and '.join(L + '!= 0' for L in firstletters)
+        body = '%s and (%s)' % (checks, body)
+    f = 'lambda %s: %s' % (params, body)
     if verbose:
         print(f)
     return eval(f), letters
