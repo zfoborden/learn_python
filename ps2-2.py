@@ -21,23 +21,23 @@ import itertools
 
 
 def floor_puzzle():
-    people = [1, 2, 3, 4, 5]
-    floors = [1, 2, 3, 4, 5]
+    perms = itertools.permutations(range(1, 6))
 
-    for p in people:
-        for f in floors:
-            print 'people: ' + str(p)
-            print 'floors: ' + str(f)
-
-    for Hopper, Kay, Liskov, Perlis, Ritchie in people:
-        for floor in floors:
-            if (Hopper != 5 and
-               Kay != 1 and
-               Liskov != 1 and Liskov != 5 and Liskov != Kay+1 and Liskov !=
-                    Kay-1 and
-               Perlis == Kay+1 and
-               Ritchie != Liskov+1 and Ritchie != Liskov-1):
+    for Hopper, Kay, Liskov, Perlis, Ritchie in perms:
+        if (Hopper != 5 and
+            Kay != 1 and
+            Liskov != 1 and
+            Liskov != 5 and
+            Liskov != Kay+1 and
+            Liskov != Kay-1 and
+            Perlis == Kay+1 and
+            Ritchie != Liskov+1 and
+            Ritchie != Liskov-1):
                 return [Hopper, Kay, Liskov, Perlis, Ritchie]
 
+    return []
 
-floor_puzzle()
+
+t = floor_puzzle()
+
+print t
