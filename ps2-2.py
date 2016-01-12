@@ -26,18 +26,14 @@ def floor_puzzle():
     for Hopper, Kay, Liskov, Perlis, Ritchie in perms:
         if (Hopper != 5 and
             Kay != 1 and
-            Liskov != 1 and
             Liskov != 5 and
-            Liskov != Kay+1 and
-            Liskov != Kay-1 and
-            Perlis == Kay+1 and
-            Ritchie != Liskov+1 and
-            Ritchie != Liskov-1):
+            Liskov != 1 and
+            Perlis > Kay and
+            Ritchie != Liskov+1 and Ritchie != Liskov-1 and
+            Liskov != Kay+1 and Liskov != Kay-1):
                 return [Hopper, Kay, Liskov, Perlis, Ritchie]
 
     return []
 
 
-t = floor_puzzle()
-
-print t
+print(floor_puzzle())
