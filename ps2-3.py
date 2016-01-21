@@ -20,31 +20,32 @@ def longest_subpalindrome_slice(text):
     "Return (i, j) such that text[i:j] is the longest palindrome in text."
     text = text.lower()
     candidate_palindromes = find_pairs(text)
-    print candidate_palindromes
-    for candidate in candidate_palindromes:
-        first = candidate[0]
-        last = candidate[1] + 1
-        t = text[first:last]
-        if find_palindromes(t):
-            return first, last
+    find_palindromes(candidate_palindromes)
+
     return None
 
 
 def find_pairs(text):
+    print text
     pairs = []
-    #reverse = text[::-1]
+    odd = False if len(text) % 2 == 0 else int((len(text) - 1) / 2)
     for i, a in enumerate(text):
         for j, b in reversed(list(enumerate(text))):
-            print j, b
-            if i != j and text[i] == b:
+            if ((odd != 0 and i == odd and j == odd) or i != j) and text[i] == b:
                 pairs.append([i, j])
 
     return pairs
 
 
-def find_palindromes(text):
-    reverse = text[::-1]
-    return text == reverse
+def find_palindromes(candidates):
+    print candidates
+    found = False
+    length = len(candidates)
+    print length
+    for candidate in candidates:
+        print candidate
+
+    return found
 
 
 def test():
