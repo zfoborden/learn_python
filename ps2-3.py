@@ -21,49 +21,34 @@ import copy
 
 def longest_subpalindrome_slice(text):
     "Return (i, j) such that text[i:j] is the longest palindrome in text."
-    text = text.lower()
-    candidate_palindromes = find_pairs(text)
-    find_palindromes(candidate_palindromes)
+    if text == '':
+        return 0, 0
 
-    return None
+    def length(slice):
+        a, b = slice
+        return b-a
 
-
-def find_pairs(text):
-    pairs = []
-    odd = False if len(text) % 2 == 0 else int(math.ceil((float(len(text))) / 2))
-    for i, a in enumerate(text):
-        for j, b in reversed(list(enumerate(text))):
-            if ((odd != 0 and i == odd and j == odd) or i != j) and text[i] == b:
-                pairs.append([i, j])
-
-    return pairs
+    candidates = [grow(text, start, end)
+                  for start in range(len(text))
+                  for end in (start, start + 1)]
+    return max(candidates, key=length)
 
 
-def find_palindromes(candidates):
-    found = False
-    length = len(candidates)
-    for i, a in enumerate(candidates):
-        print a
-        for j, b in enumerate(reversed(candidates)):
-            if a == b:
-                newKey = copy.copy(j)
-                expected = [a[0], b[1] - 1]
-                for c in candidates[i:j]:
-                    if candidates[i + 1] == candidates[j - 1]:
-                        pass
-            else:
-                pass
-
-    return found
+def grow(text, start, end):
+    while(start > 0 and end < len(text) and
+          text[start - 1].upper() == text[end].upper()):
+        start -= 1
+        end += 1
+    return start, end
 
 
 def test():
     l = longest_subpalindrome_slice
-    #assert l('racecar') == (0, 7)
-    #assert l('Racecar') == (0, 7)
-    #assert l('RacecarX') == (0, 7)
-    #assert l('Race carr') == (7, 9)
-    #assert l('') == (0, 0)
+    assert l('racecar') == (0, 7)
+    assert l('Racecar') == (0, 7)
+    assert l('RacecarX') == (0, 7)
+    assert l('Race carr') == (7, 9)
+    assert l('') == (0, 0)
     assert l('something rac e car going') == (8, 21)
     assert l('xxxxx') == (0, 5)
     assert l('Mad am I ma dam.') == (0, 15)
